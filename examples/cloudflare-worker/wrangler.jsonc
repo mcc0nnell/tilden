@@ -1,0 +1,9 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "tilden-reference-resolver",
+  "main": "./src/index.js",
+  "compatibility_date": "2026-09-05",
+  "vars": {
+    "TILDEN_ROUTES": "{\"tel:+12025550142\":{\"delegationSequence\":17,\"verificationMethod\":\"urn:tilden:demo:hmac-sha256\",\"endpoints\":[{\"id\":\"primary-video\",\"uri\":\"sip:alice@example.net\",\"protocol\":\"sip\",\"priority\":10,\"capabilities\":[\"video\",\"asl\",\"rtt\"]},{\"id\":\"browser\",\"uri\":\"https://call.example.net/alice\",\"protocol\":\"webrtc\",\"priority\":20,\"capabilities\":[\"video\",\"text\"]}]}}"
+  }
+}

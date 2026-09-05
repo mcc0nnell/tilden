@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/schema/tilden-capabilities-v0.1.schema.json",
+  "title": "Tilden Capabilities v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "media": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["audio", "video", "text"]
+      }
+    },
+    "protocols": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": ["sip", "webrtc", "rtt", "pstn"]
+      }
+    },
+    "features": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "asl",
+          "captions",
+          "relay",
+          "direct-video",
+          "rtt-interworking",
+          "e2ee",
+          "authenticated-endpoint",
+          "federation-authenticated"
+        ]
+      }
+    }
+  }
+}

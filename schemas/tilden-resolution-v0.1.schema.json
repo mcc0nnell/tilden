@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/schemas/tilden-resolution-v0.1.schema.json",
+  "title": "Tilden Resolution Object v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "subject", "authority", "ttl", "endpoints"],
+  "properties": {
+    "version": {
+      "const": "tilden/0.1"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "type": "string",
+      "format": "uri"
+    },
+    "ttl": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 86400
+    },
+    "endpoints": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/endpoint" }
+    }
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "transport", "uri", "priority", "capabilities"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transport": {
+          "type": "string",
+          "minLength": 1
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}
