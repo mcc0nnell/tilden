@@ -39,6 +39,7 @@ Tilden resolves identity to capability. The selected communications system then 
 - [`TILDEN-ESIM-002`](spec/TILDEN-ESIM-002.md) — optional carrier-backed eSIM identity binding
 - [`TILDEN-AUTH-003`](spec/TILDEN-AUTH-003.md) — authenticated resolver authority and bootstrap
 - [`TILDEN-SIGN-004`](spec/TILDEN-SIGN-004.md) — signed Resolution Objects and current-authority verification
+- [`TILDEN-BAUDOT-005`](spec/TILDEN-BAUDOT-005.md) — Baudot service discovery, modality-safe transport selection, and readiness binding
 
 See the complete [`spec/`](spec/) index.
 
@@ -106,6 +107,46 @@ Accept: application/tilden+json, application/tilden-resolution+jws
 ```
 
 The worker is not the phone network. It is the authorized resolution service that tells a client which networks or endpoints are available.
+
+## Baudot binding
+
+`TILDEN-BAUDOT-005` gives the signed `baudot` capability an exact meaning.
+
+```text
+verified Tilden number
+       |
+       v
+signed baudot service URI
+       |
+       v
+Baudot Service Descriptor
+       |
+       +-- SIP + T.140/RFC 4103
+       |
+       +-- WebRTC + T.140/RFC 8865
+       |
+       +-- optional RUE/RFC 9248 profile
+       |
+       v
+observed modality readiness
+```
+
+The outer Tilden record selects an authorized service. The dynamic Baudot descriptor chooses among transports but may only **narrow** the signed media/features, never expand them.
+
+The binding also preserves Baudot's critical runtime distinction:
+
+```text
+signaling success != usable communication
+```
+
+For the reference RTT readiness contract, negotiation alone is insufficient. `rttReady` requires both `rttNegotiated` and independent observation of T.140 flow.
+
+If an explicit caller policy requires video + RTT, failure of that accessible path does **not** silently authorize fallback to an audio-only PSTN call.
+
+Reference descriptor and executable vector:
+
+- [`examples/baudot-service.json`](examples/baudot-service.json)
+- [`examples/validate-baudot-binding.mjs`](examples/validate-baudot-binding.mjs)
 
 ## eSIM profile
 
