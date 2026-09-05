@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/schema/tilden-resolution-response-v0.1.schema.json",
+  "title": "Tilden Resolution Response v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "identifier",
+    "issuedAt",
+    "expiresAt",
+    "endpoints",
+    "authority",
+    "proof"
+  ],
+  "properties": {
+    "version": {"const": "0.1"},
+    "identifier": {"type": "string", "minLength": 1},
+    "requestId": {
+      "type": ["string", "null"],
+      "minLength": 1
+    },
+    "issuedAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"},
+    "endpoints": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "protocol"],
+        "properties": {
+          "id": {"type": "string", "minLength": 1},
+          "uri": {"type": "string", "format": "uri"},
+          "protocol": {"type": "string", "minLength": 1},
+          "priority": {"type": "integer", "minimum": 0},
+          "capabilities": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["delegationSequence", "verificationMethod"],
+      "properties": {
+        "delegationSequence": {"type": "integer", "minimum": 0},
+        "verificationMethod": {"type": "string", "minLength": 1}
+      }
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type", "verificationMethod", "proofValue"],
+      "properties": {
+        "type": {"type": "string", "minLength": 1},
+        "verificationMethod": {"type": "string", "minLength": 1},
+        "created": {"type": "string", "format": "date-time"},
+        "proofValue": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}
