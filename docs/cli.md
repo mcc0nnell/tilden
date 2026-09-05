@@ -16,7 +16,7 @@ Resolve a canonical identifier from a deterministic reference directory:
 
 ```bash
 tilden resolve tel:+12025550123 \
-  --directory examples/reference-directory.json \
+  --directory conformance/reference/directory.json \
   -o resolution.json
 ```
 
@@ -106,7 +106,7 @@ Candidates:
 python -m pip install -e .
 
 tilden resolve tel:+12025550123 \
-  --directory examples/reference-directory.json \
+  --directory conformance/reference/directory.json \
   -o /tmp/tilden-resolution.json
 
 tilden request tel:+12025550123 \
