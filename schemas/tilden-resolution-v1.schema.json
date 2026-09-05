@@ -3,7 +3,7 @@
   "$id": "https://tilden.example/spec/schemas/tilden-resolution-v1.schema.json",
   "title": "Tilden Resolution Object v1",
   "type": "object",
-  "additionalProperties": false,
+  "additionalProperties": true,
   "required": [
     "tilden_version",
     "subject",
@@ -42,7 +42,7 @@
   "$defs": {
     "capability": {
       "type": "object",
-      "additionalProperties": false,
+      "additionalProperties": true,
       "required": ["type", "uri", "priority"],
       "properties": {
         "type": {
