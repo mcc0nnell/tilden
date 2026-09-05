@@ -37,6 +37,8 @@ Tilden resolves identity to capability. The selected communications system then 
 
 - [`TILDEN-CORE-001`](spec/TILDEN-CORE-001.md) — identity, discovery, and capability resolution
 - [`TILDEN-ESIM-002`](spec/TILDEN-ESIM-002.md) — optional carrier-backed eSIM identity binding
+- [`TILDEN-AUTH-003`](spec/TILDEN-AUTH-003.md) — authenticated resolver authority and bootstrap
+- [`TILDEN-SIGN-004`](spec/TILDEN-SIGN-004.md) — signed Resolution Objects and current-authority verification
 
 See the complete [`spec/`](spec/) index.
 
@@ -71,16 +73,39 @@ A Tilden resolver returns a short-lived description of authorized ways to reach 
 
 The machine-readable schema is [`schemas/tilden-resolution-v1.schema.json`](schemas/tilden-resolution-v1.schema.json), with a fuller reference object in [`examples/resolution.json`](examples/resolution.json).
 
+## Trust chain
+
+TLS can prove that a client reached `resolver.example.net`; it cannot prove that the resolver is allowed to speak for a particular telephone number. Tilden therefore separates origin authentication, subject authority, and object integrity:
+
+```text
+identity
+  -> authenticated bootstrap
+  -> subject delegation
+  -> authorized resolver + signing key
+  -> verified Resolution Object
+  -> selected endpoint
+  -> independently authenticated session
+```
+
+`TILDEN-AUTH-003` establishes resolver and signing-key authority. `TILDEN-SIGN-004` uses that delegated key to sign the Resolution Object with Ed25519 JWS.
+
+A cryptographically valid signature is not enough by itself. Clients verify the signer against the **current** accepted delegation state, so revocation, number reassignment, and resolver transfer can invalidate still-unexpired cached objects.
+
+Reference objects:
+
+- [`examples/authority-delegation.json`](examples/authority-delegation.json)
+- [`examples/signed-resolution.jws.json`](examples/signed-resolution.jws.json)
+
 ## Reference HTTPS profile
 
 The first reference resolver profile is intentionally small enough to run on ordinary edge infrastructure, including a serverless worker:
 
 ```http
 GET /.well-known/tilden/v1/resolve?subject=tel%3A%2B12025550123
-Accept: application/tilden+json
+Accept: application/tilden+json, application/tilden-resolution+jws
 ```
 
-The worker is not the phone network. It is the resolution authority that tells an authorized client which networks or endpoints are available.
+The worker is not the phone network. It is the authorized resolution service that tells a client which networks or endpoints are available.
 
 ## eSIM profile
 
