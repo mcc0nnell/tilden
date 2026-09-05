@@ -1,0 +1,38 @@
+{
+  "baudot_version": "1",
+  "subject": "tel:+12025550123",
+  "service_uri": "https://baudot.example.net/call/+12025550123",
+  "issued_at": "2026-09-05T21:00:00Z",
+  "expires_at": "2026-09-05T21:05:00Z",
+  "transports": [
+    {
+      "id": "sip-total-conversation",
+      "type": "sip",
+      "uri": "sips:+12025550123@sip.baudot.example.net;user=phone",
+      "priority": 10,
+      "media": ["video", "audio", "rtt"],
+      "features": ["asl", "direct", "t140"],
+      "profiles": ["t140-rfc4103"]
+    },
+    {
+      "id": "webrtc-total-conversation",
+      "type": "webrtc",
+      "uri": "https://baudot.example.net/webrtc/+12025550123",
+      "priority": 20,
+      "media": ["video", "audio", "rtt"],
+      "features": ["asl", "direct", "t140"],
+      "profiles": ["t140-rfc8865"]
+    }
+  ],
+  "readiness": {
+    "contract": "baudot.modality-readiness@1",
+    "required": {
+      "rtt": ["rttNegotiated", "firstT140CharacterObserved"],
+      "video": ["videoInbound", "videoDecoded", "videoRendered"]
+    }
+  },
+  "metadata": {
+    "profile": "TILDEN-BAUDOT-005",
+    "claim_boundary": "discovery and advertised protocol support; runtime readiness requires evidence"
+  }
+}
