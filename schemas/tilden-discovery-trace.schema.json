@@ -48,5 +48,29 @@
       "enum": ["success", "not_found", "temporarily_unavailable", "untrusted", "expired", "unsupported_identifier", "malformed"]
     },
     "resolutionDigest": {"type": "string", "minLength": 1}
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"terminal": {"const": "success"}},
+        "required": ["terminal"]
+      },
+      "then": {
+        "required": ["resolutionDigest"],
+        "properties": {
+          "hops": {
+            "minItems": 1,
+            "items": {
+              "properties": {"authenticated": {"const": true}},
+              "required": ["authenticated"]
+            },
+            "contains": {
+              "properties": {"outcome": {"const": "assertion"}},
+              "required": ["outcome"]
+            }
+          }
+        }
+      }
+    }
+  ]
 }
