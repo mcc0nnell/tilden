@@ -1,3 +1,0 @@
-# Tilden CLI
-
-Placeholder
