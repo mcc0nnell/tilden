@@ -1,0 +1,30 @@
+{
+  "version": "0.1",
+  "inputIdentifier": "tel:+12025550123",
+  "canonicalIdentity": "tel:+12025550123",
+  "profile": "e164-demo",
+  "startedAt": "2026-09-05T21:00:00Z",
+  "finishedAt": "2026-09-05T21:00:01Z",
+  "hops": [
+    {
+      "sequence": 0,
+      "authority": "numbering.example",
+      "mechanism": "directory",
+      "target": "https://numbering.example/tilden/+12025550123",
+      "authenticated": true,
+      "expiresAt": "2026-09-05T22:00:00Z",
+      "outcome": "delegated"
+    },
+    {
+      "sequence": 1,
+      "authority": "provider.example",
+      "mechanism": "https-well-known",
+      "target": "https://provider.example/.well-known/tilden-demo/+12025550123",
+      "authenticated": true,
+      "expiresAt": "2026-09-05T21:30:00Z",
+      "outcome": "assertion"
+    }
+  ],
+  "terminal": "success",
+  "resolutionDigest": "sha256:demo"
+}
