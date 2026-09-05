@@ -14,6 +14,7 @@ Tilden specifications use stable identifiers.
 ## Interoperability profiles
 
 - [`TILDEN-ESIM-002.md`](TILDEN-ESIM-002.md) — carrier-backed eSIM identity binding
+- [`TILDEN-BAUDOT-005.md`](TILDEN-BAUDOT-005.md) — Baudot service discovery, transport selection, modality requirements, readiness, and accessibility-safe fallback
 
 The core specification defines the resolution model. Authority specifications define who may speak for an identity. Signature profiles preserve resolution integrity beyond the live resolver connection. Interoperability profiles add external-system behavior without changing the fundamental identity model.
 
@@ -24,3 +25,7 @@ The primary design invariants are:
 > **ORIGIN != SUBJECT AUTHORITY**
 >
 > **A VALID SIGNATURE != CURRENT SUBJECT AUTHORITY**
+>
+> **SERVICE DISCOVERY != TRANSPORT READINESS**
+>
+> **SIGNALING SUCCESS != USABLE COMMUNICATION**
