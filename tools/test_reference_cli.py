@@ -24,7 +24,7 @@ def run() -> int:
 
         assert main([
             "resolve", IDENTIFIER,
-            "--directory", str(ROOT / "examples" / "reference-directory.json"),
+            "--directory", str(ROOT / "conformance" / "reference" / "directory.json"),
             "-o", str(resolution),
         ]) == 0
 
