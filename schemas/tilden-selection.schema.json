@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.invalid/schema/tilden-selection-0.1.json",
+  "title": "TildenSelection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "selectionId",
+    "target",
+    "resolutionDigest",
+    "requestDigest",
+    "evaluatedAt",
+    "candidates",
+    "terminal"
+  ],
+  "properties": {
+    "version": {"const": "0.1"},
+    "selectionId": {"type": "string", "minLength": 8},
+    "target": {"type": "string", "minLength": 1},
+    "resolutionDigest": {"type": "string", "minLength": 8},
+    "requestDigest": {"type": "string", "minLength": 8},
+    "evaluatedAt": {"type": "string", "format": "date-time"},
+    "candidates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["uri", "preferenceScore", "outcome"],
+        "properties": {
+          "uri": {"type": "string", "minLength": 1},
+          "priority": {"type": "integer", "minimum": 0},
+          "preferenceScore": {"type": "integer", "minimum": 0},
+          "outcome": {
+            "type": "string",
+            "enum": ["rejected-required", "rejected-excluded", "eligible", "selected"]
+          },
+          "missingRequired": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"$ref": "#/$defs/capabilityId"}
+          },
+          "matchedExcluded": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"$ref": "#/$defs/capabilityId"}
+          },
+          "matchedPreferred": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {"$ref": "#/$defs/capabilityId"}
+          }
+        }
+      }
+    },
+    "terminal": {
+      "type": "string",
+      "enum": [
+        "selected",
+        "no_capable_endpoint",
+        "target_mismatch",
+        "resolution_mismatch",
+        "expired_request",
+        "invalid_request"
+      ]
+    },
+    "selectedEndpoint": {"type": "string", "minLength": 1}
+  },
+  "$defs": {
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"terminal": {"const": "selected"}}, "required": ["terminal"]},
+      "then": {"required": ["selectedEndpoint"]},
+      "else": {"not": {"required": ["selectedEndpoint"]}}
+    }
+  ]
+}

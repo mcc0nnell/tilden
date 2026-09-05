@@ -1,0 +1,224 @@
+{
+  "version": "0.1",
+  "cases": [
+    {
+      "name": "prefer-e2ee-and-explain-loser",
+      "selectionId": "sel-prefer-e2ee-0001",
+      "evaluatedAt": "2026-09-05T22:20:00Z",
+      "targetIdentity": "tel:+33123456789",
+      "resolutionDigest": "sha256:resolution-prefer-e2ee-0001",
+      "requestDigest": "sha256:request-prefer-e2ee-0001",
+      "request": {
+        "version": "0.1",
+        "scope": "local-selection",
+        "requestId": "req-pref-e2ee-0001",
+        "nonce": "nonce-pref-e2ee-0001-abcdef",
+        "target": {"canonicalIdentity": "tel:+33123456789"},
+        "required": [
+          {"id": "video.sign", "parameters": {"languages": ["ase"]}},
+          {"id": "text.rtt"}
+        ],
+        "preferred": [
+          {"id": "security.e2ee", "weight": 100}
+        ],
+        "excluded": [],
+        "createdAt": "2026-09-05T22:18:00Z",
+        "expiresAt": "2026-09-05T22:23:00Z"
+      },
+      "endpoints": [
+        {
+          "uri": "sip:plain@example.net",
+          "priority": 1,
+          "capabilities": [
+            {"id": "video.sign", "parameters": {"languages": ["ase"]}},
+            {"id": "text.rtt"}
+          ]
+        },
+        {
+          "uri": "sip:secure@example.net",
+          "priority": 10,
+          "capabilities": [
+            {"id": "video.sign", "parameters": {"languages": ["ase", "bfi"]}},
+            {"id": "text.rtt"},
+            {"id": "security.e2ee"}
+          ]
+        }
+      ],
+      "expected": {
+        "version": "0.1",
+        "selectionId": "sel-prefer-e2ee-0001",
+        "target": "tel:+33123456789",
+        "resolutionDigest": "sha256:resolution-prefer-e2ee-0001",
+        "requestDigest": "sha256:request-prefer-e2ee-0001",
+        "evaluatedAt": "2026-09-05T22:20:00Z",
+        "candidates": [
+          {
+            "uri": "sip:plain@example.net",
+            "priority": 1,
+            "preferenceScore": 0,
+            "outcome": "eligible",
+            "matchedPreferred": []
+          },
+          {
+            "uri": "sip:secure@example.net",
+            "priority": 10,
+            "preferenceScore": 100,
+            "outcome": "selected",
+            "matchedPreferred": ["security.e2ee"]
+          }
+        ],
+        "terminal": "selected",
+        "selectedEndpoint": "sip:secure@example.net"
+      }
+    },
+    {
+      "name": "record-required-rejection",
+      "selectionId": "sel-required-reject-01",
+      "evaluatedAt": "2026-09-05T22:20:00Z",
+      "targetIdentity": "acct:bob@example.org",
+      "resolutionDigest": "sha256:resolution-required-reject-01",
+      "requestDigest": "sha256:request-required-reject-01",
+      "request": {
+        "version": "0.1",
+        "scope": "local-selection",
+        "requestId": "req-required-000001",
+        "nonce": "nonce-required-000001-abcdef",
+        "target": {"canonicalIdentity": "acct:bob@example.org"},
+        "required": [
+          {"id": "video.sign"},
+          {"id": "text.rtt"}
+        ],
+        "preferred": [],
+        "excluded": [],
+        "createdAt": "2026-09-05T22:18:00Z",
+        "expiresAt": "2026-09-05T22:23:00Z"
+      },
+      "endpoints": [
+        {
+          "uri": "sip:video-only@example.org",
+          "priority": 1,
+          "capabilities": [{"id": "video.sign"}]
+        }
+      ],
+      "expected": {
+        "version": "0.1",
+        "selectionId": "sel-required-reject-01",
+        "target": "acct:bob@example.org",
+        "resolutionDigest": "sha256:resolution-required-reject-01",
+        "requestDigest": "sha256:request-required-reject-01",
+        "evaluatedAt": "2026-09-05T22:20:00Z",
+        "candidates": [
+          {
+            "uri": "sip:video-only@example.org",
+            "priority": 1,
+            "preferenceScore": 0,
+            "outcome": "rejected-required",
+            "missingRequired": ["text.rtt"]
+          }
+        ],
+        "terminal": "no_capable_endpoint"
+      }
+    },
+    {
+      "name": "record-exclusion-and-select-direct",
+      "selectionId": "sel-direct-policy-0001",
+      "evaluatedAt": "2026-09-05T22:20:00Z",
+      "targetIdentity": "acct:bob@example.org",
+      "resolutionDigest": "sha256:resolution-direct-policy-0001",
+      "requestDigest": "sha256:request-direct-policy-0001",
+      "request": {
+        "version": "0.1",
+        "scope": "local-selection",
+        "requestId": "req-direct-00000001",
+        "nonce": "nonce-direct-00000001-abcdef",
+        "target": {"canonicalIdentity": "acct:bob@example.org"},
+        "required": [{"id": "video.sign"}],
+        "preferred": [],
+        "excluded": [{"id": "relay.interpreter"}],
+        "createdAt": "2026-09-05T22:18:00Z",
+        "expiresAt": "2026-09-05T22:23:00Z"
+      },
+      "endpoints": [
+        {
+          "uri": "sip:relay@example.org",
+          "priority": 1,
+          "capabilities": [
+            {"id": "video.sign"},
+            {"id": "relay.interpreter"}
+          ]
+        },
+        {
+          "uri": "sip:direct@example.org",
+          "priority": 20,
+          "capabilities": [{"id": "video.sign"}]
+        }
+      ],
+      "expected": {
+        "version": "0.1",
+        "selectionId": "sel-direct-policy-0001",
+        "target": "acct:bob@example.org",
+        "resolutionDigest": "sha256:resolution-direct-policy-0001",
+        "requestDigest": "sha256:request-direct-policy-0001",
+        "evaluatedAt": "2026-09-05T22:20:00Z",
+        "candidates": [
+          {
+            "uri": "sip:relay@example.org",
+            "priority": 1,
+            "preferenceScore": 0,
+            "outcome": "rejected-excluded",
+            "matchedExcluded": ["relay.interpreter"]
+          },
+          {
+            "uri": "sip:direct@example.org",
+            "priority": 20,
+            "preferenceScore": 0,
+            "outcome": "selected",
+            "matchedPreferred": []
+          }
+        ],
+        "terminal": "selected",
+        "selectedEndpoint": "sip:direct@example.org"
+      }
+    },
+    {
+      "name": "fail-before-candidate-evaluation-on-resolution-mismatch",
+      "selectionId": "sel-resolution-mismatch-01",
+      "evaluatedAt": "2026-09-05T22:20:00Z",
+      "targetIdentity": "acct:bob@example.org",
+      "resolutionDigest": "sha256:resolution-current-0001",
+      "requestDigest": "sha256:request-resolution-bound-0001",
+      "request": {
+        "version": "0.1",
+        "scope": "local-selection",
+        "requestId": "req-resolve-0000001",
+        "nonce": "nonce-resolve-0000001-abcdef",
+        "target": {
+          "canonicalIdentity": "acct:bob@example.org",
+          "resolutionDigest": "sha256:resolution-expected-0001"
+        },
+        "required": [{"id": "text.rtt"}],
+        "preferred": [],
+        "excluded": [],
+        "createdAt": "2026-09-05T22:18:00Z",
+        "expiresAt": "2026-09-05T22:23:00Z"
+      },
+      "endpoints": [
+        {
+          "uri": "sip:rtt@example.org",
+          "priority": 1,
+          "capabilities": [{"id": "text.rtt"}]
+        }
+      ],
+      "expected": {
+        "version": "0.1",
+        "selectionId": "sel-resolution-mismatch-01",
+        "target": "acct:bob@example.org",
+        "resolutionDigest": "sha256:resolution-current-0001",
+        "requestDigest": "sha256:request-resolution-bound-0001",
+        "evaluatedAt": "2026-09-05T22:20:00Z",
+        "candidates": [],
+        "terminal": "resolution_mismatch"
+      }
+    }
+  ]
+}
