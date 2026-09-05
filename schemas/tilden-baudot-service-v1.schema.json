@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/spec/schemas/tilden-baudot-service-v1.schema.json",
+  "title": "Tilden Baudot Service Descriptor v1",
+  "type": "object",
+  "required": [
+    "baudot_version",
+    "subject",
+    "service_uri",
+    "issued_at",
+    "expires_at",
+    "transports",
+    "readiness"
+  ],
+  "properties": {
+    "baudot_version": {
+      "const": "1"
+    },
+    "subject": {
+      "type": "string",
+      "pattern": "^tel:\\+[1-9][0-9]{0,14}$"
+    },
+    "service_uri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "transports": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/transport"
+      }
+    },
+    "readiness": {
+      "$ref": "#/$defs/readiness"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true,
+  "$defs": {
+    "transport": {
+      "type": "object",
+      "required": ["id", "type", "uri", "priority", "media"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "type": "string",
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "media": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "features": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "profiles": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z0-9][a-z0-9-]*$"
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": true
+    },
+    "readiness": {
+      "type": "object",
+      "required": ["contract", "required"],
+      "properties": {
+        "contract": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
