@@ -12,6 +12,7 @@ Tilden specifications use stable identifiers.
 
 - `TILDEN-E164-001.md` — exploratory U.S. E.164 authority bootstrap
 - `TILDEN-ITRS-001.md` — authorized TRS Numbering Directory query profile
+- `TILDEN-ITRS-002.md` — DNS/ENUM compatibility profile for fielded iTRS routing
 - `TILDEN-CAP-001.md` — endpoint capability vocabulary and privacy semantics
 
 ## Architectural rules
@@ -20,4 +21,4 @@ Tilden specifications use stable identifiers.
 
 > The number owns the route. The route does not own the number.
 
-For identifiers already governed by a specialized authoritative routing system, a Tilden profile SHOULD adapt the authoritative result rather than recreate that authority. `TILDEN-ITRS-001` applies that rule to the FCC TRS Numbering Directory.
+For identifiers already governed by a specialized authoritative routing system, a Tilden profile SHOULD adapt the authoritative result rather than recreate that authority. `TILDEN-ITRS-001` applies that rule to the FCC TRS Numbering Directory. `TILDEN-ITRS-002` preserves compatibility with DNS/ENUM-style iTRS resolution observed in fielded systems while keeping those mechanics outside the Tilden core protocol.
