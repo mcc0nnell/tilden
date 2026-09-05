@@ -37,7 +37,7 @@ A stdlib-only reference CLI makes the current stack executable.
 python -m pip install -e .
 
 tilden resolve tel:+12025550123 \
-  --directory examples/reference-directory.json \
+  --directory conformance/reference/directory.json \
   -o /tmp/resolution.json
 
 tilden request tel:+12025550123 \
@@ -75,8 +75,8 @@ src/tilden/    reference executable
 spec/          normative specifications
 schemas/       machine-readable protocol schemas
 registry/      capability registry
-examples/      example and reference data
-conformance/   executable interoperability/conformance fixtures
+examples/      canonical object examples
+conformance/   executable interoperability/conformance fixtures and reference data
 docs/          architecture, CLI guide, handoff notes, ADRs
 tools/         validation and development utilities
 ```
