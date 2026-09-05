@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.invalid/schema/tilden-capability-registry-0.1.json",
+  "title": "TildenCapabilityRegistry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "capabilities"],
+  "properties": {
+    "version": {"const": "0.1"},
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "status", "description", "parameters"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["draft", "experimental", "stable", "deprecated"]
+          },
+          "description": {"type": "string", "minLength": 1},
+          "parameters": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Za-z][A-Za-z0-9]*$"
+            }
+          }
+        }
+      }
+    }
+  }
+}
