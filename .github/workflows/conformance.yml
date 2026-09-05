@@ -23,3 +23,5 @@ jobs:
         run: python tools/validate_discovery_traces.py
       - name: Validate capability registry and matching
         run: python tools/validate_capabilities.py
+      - name: Validate ephemeral requests and selection
+        run: python tools/validate_requests.py

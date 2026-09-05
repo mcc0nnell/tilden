@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.invalid/schema/tilden-request-0.1.json",
+  "title": "TildenRequest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "scope",
+    "requestId",
+    "nonce",
+    "target",
+    "required",
+    "preferred",
+    "excluded",
+    "createdAt",
+    "expiresAt"
+  ],
+  "properties": {
+    "version": {"const": "0.1"},
+    "scope": {"const": "local-selection"},
+    "requestId": {"type": "string", "minLength": 16, "maxLength": 128},
+    "nonce": {"type": "string", "minLength": 16, "maxLength": 256},
+    "target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonicalIdentity"],
+      "properties": {
+        "canonicalIdentity": {"type": "string", "minLength": 1},
+        "resolutionDigest": {"type": "string", "minLength": 1}
+      }
+    },
+    "required": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/requirement"}
+    },
+    "preferred": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/preference"}
+    },
+    "excluded": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {"$ref": "#/$defs/requirement"}
+    },
+    "createdAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:[.-][a-z0-9]+)*$"
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {"$ref": "#/$defs/capabilityId"},
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "preference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "weight"],
+      "properties": {
+        "id": {"$ref": "#/$defs/capabilityId"},
+        "parameters": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "weight": {"type": "integer", "minimum": 1, "maximum": 100}
+      }
+    }
+  }
+}

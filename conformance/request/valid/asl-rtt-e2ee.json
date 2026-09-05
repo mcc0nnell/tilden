@@ -1,0 +1,30 @@
+{
+  "version": "0.1",
+  "scope": "local-selection",
+  "requestId": "req-7mC1vN4X1q9zR2Lp",
+  "nonce": "m6p7qQw5g8Y0bXhTj3s2ZA",
+  "target": {
+    "canonicalIdentity": "tel:+33123456789",
+    "resolutionDigest": "sha256:2f21d3b8example"
+  },
+  "required": [
+    {
+      "id": "video.sign",
+      "parameters": {
+        "languages": ["ase"]
+      }
+    },
+    {
+      "id": "text.rtt"
+    }
+  ],
+  "preferred": [
+    {
+      "id": "security.e2ee",
+      "weight": 100
+    }
+  ],
+  "excluded": [],
+  "createdAt": "2026-09-05T21:10:00Z",
+  "expiresAt": "2026-09-05T21:15:00Z"
+}
