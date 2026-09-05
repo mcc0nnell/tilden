@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/spec/schemas/tilden-signed-resolution-v1.schema.json",
+  "title": "Tilden Signed Resolution Object v1",
+  "description": "Flattened JWS JSON Serialization envelope defined by TILDEN-SIGN-004.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["payload", "protected", "signature"],
+  "properties": {
+    "payload": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "protected": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    },
+    "signature": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9_-]+$"
+    }
+  }
+}
