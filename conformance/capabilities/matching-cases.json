@@ -1,0 +1,61 @@
+{
+  "version": "0.1",
+  "cases": [
+    {
+      "name": "sign-and-rtt-selects-multimodal-endpoint",
+      "required": ["video.sign", "text.rtt"],
+      "optional": ["security.e2ee"],
+      "endpoints": [
+        {
+          "uri": "sip:video-only@example.net",
+          "capabilities": ["video.sign"]
+        },
+        {
+          "uri": "sip:accessible@example.net",
+          "capabilities": ["video.sign", "text.rtt", "security.e2ee", "session.multimodal"]
+        }
+      ],
+      "expected": "sip:accessible@example.net"
+    },
+    {
+      "name": "missing-required-capability-produces-no-candidate",
+      "required": ["video.sign", "text.rtt"],
+      "optional": [],
+      "endpoints": [
+        {
+          "uri": "sip:video-only@example.net",
+          "capabilities": ["video.sign"]
+        }
+      ],
+      "expected": null
+    },
+    {
+      "name": "optional-capability-improves-ranking",
+      "required": ["text.rtt"],
+      "optional": ["security.e2ee"],
+      "endpoints": [
+        {
+          "uri": "sip:rtt@example.net",
+          "capabilities": ["text.rtt"]
+        },
+        {
+          "uri": "sip:rtt-secure@example.net",
+          "capabilities": ["text.rtt", "security.e2ee"]
+        }
+      ],
+      "expected": "sip:rtt-secure@example.net"
+    },
+    {
+      "name": "unknown-required-capability-is-not-assumed-supported",
+      "required": ["x.example.future-mode"],
+      "optional": [],
+      "endpoints": [
+        {
+          "uri": "sip:ordinary@example.net",
+          "capabilities": ["audio.voice", "video.sign"]
+        }
+      ],
+      "expected": null
+    }
+  ]
+}
