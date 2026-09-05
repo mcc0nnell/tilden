@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.invalid/schema/tilden-discovery-trace-0.1.json",
+  "title": "TildenDiscoveryTrace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "inputIdentifier",
+    "canonicalIdentity",
+    "profile",
+    "hops",
+    "terminal"
+  ],
+  "properties": {
+    "version": {"const": "0.1"},
+    "inputIdentifier": {"type": "string", "minLength": 1},
+    "canonicalIdentity": {"type": "string", "minLength": 1},
+    "profile": {"type": "string", "minLength": 1},
+    "startedAt": {"type": "string", "format": "date-time"},
+    "finishedAt": {"type": "string", "format": "date-time"},
+    "hops": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["sequence", "authority", "mechanism", "authenticated", "outcome"],
+        "properties": {
+          "sequence": {"type": "integer", "minimum": 0},
+          "authority": {"type": "string", "minLength": 1},
+          "mechanism": {
+            "type": "string",
+            "enum": ["enum", "webfinger", "https-well-known", "dns-svcb", "directory", "configured", "other"]
+          },
+          "target": {"type": "string", "minLength": 1},
+          "authenticated": {"type": "boolean"},
+          "expiresAt": {"type": "string", "format": "date-time"},
+          "outcome": {
+            "type": "string",
+            "enum": ["delegated", "assertion", "negative", "unavailable", "untrusted", "malformed"]
+          },
+          "detail": {"type": "string"}
+        }
+      }
+    },
+    "terminal": {
+      "type": "string",
+      "enum": ["success", "not_found", "temporarily_unavailable", "untrusted", "expired", "unsupported_identifier", "malformed"]
+    },
+    "resolutionDigest": {"type": "string", "minLength": 1}
+  }
+}
