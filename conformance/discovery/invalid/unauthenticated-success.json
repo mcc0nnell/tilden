@@ -1,0 +1,16 @@
+{
+  "version": "0.1",
+  "inputIdentifier": "tel:+12025550123",
+  "canonicalIdentity": "tel:+12025550123",
+  "profile": "e164-demo",
+  "hops": [
+    {
+      "sequence": 0,
+      "authority": "numbering.example",
+      "mechanism": "directory",
+      "authenticated": false,
+      "outcome": "assertion"
+    }
+  ],
+  "terminal": "success"
+}
