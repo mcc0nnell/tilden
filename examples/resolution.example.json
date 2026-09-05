@@ -1,0 +1,31 @@
+{
+  "version": "0.1",
+  "canonicalIdentity": "tel:+12025550123",
+  "authority": {
+    "id": "example-access.net"
+  },
+  "endpoints": [
+    {
+      "uri": "sip:access@example-access.net",
+      "priority": 10,
+      "weight": 100,
+      "transport": "tls",
+      "capabilities": [
+        { "id": "video.sign", "parameters": { "languages": ["ase"] } },
+        { "id": "text.rtt", "parameters": { "profile": "t140" } },
+        { "id": "security.e2ee" }
+      ]
+    }
+  ],
+  "capabilities": [
+    { "id": "video.sign" },
+    { "id": "text.rtt" },
+    { "id": "audio.voice" }
+  ],
+  "trust": {
+    "profile": "example-signed-resolution-v0",
+    "keyId": "example-access.net#resolver-1",
+    "proof": "EXAMPLE-NONCRYPTOGRAPHIC-PROOF"
+  },
+  "expiresAt": "2030-01-01T00:00:00Z"
+}
