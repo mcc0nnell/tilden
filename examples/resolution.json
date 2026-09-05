@@ -1,0 +1,45 @@
+{
+  "tilden_version": "1",
+  "subject": "tel:+12025550123",
+  "issued_at": "2026-09-05T21:00:00Z",
+  "expires_at": "2026-09-05T21:15:00Z",
+  "authority": "https://resolver.example.net",
+  "capabilities": [
+    {
+      "type": "baudot",
+      "uri": "https://baudot.example.net/call/+12025550123",
+      "priority": 10,
+      "media": ["video", "audio", "rtt"],
+      "features": ["asl", "direct", "t140"]
+    },
+    {
+      "type": "sip",
+      "uri": "sip:+12025550123@edge.example.net;user=phone",
+      "priority": 20,
+      "media": ["video", "audio", "rtt"],
+      "features": ["asl", "t140"]
+    },
+    {
+      "type": "vrs",
+      "uri": "https://vrs.example.net/call/+12025550123",
+      "priority": 30,
+      "media": ["video"],
+      "features": ["asl", "relay"]
+    },
+    {
+      "type": "carrier-esim",
+      "uri": "tel:+12025550123",
+      "priority": 90,
+      "media": ["audio", "text"],
+      "metadata": {
+        "state": "active"
+      }
+    },
+    {
+      "type": "pstn",
+      "uri": "tel:+12025550123",
+      "priority": 100,
+      "media": ["audio"]
+    }
+  ]
+}
