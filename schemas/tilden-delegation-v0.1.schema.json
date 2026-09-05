@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/schema/tilden-delegation-v0.1.schema.json",
+  "title": "Tilden Delegation Record v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "identifier",
+    "resolver",
+    "verificationMethod",
+    "issuedAt",
+    "expiresAt",
+    "sequence",
+    "proof"
+  ],
+  "properties": {
+    "version": {
+      "const": "0.1"
+    },
+    "identifier": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Normalized Tilden identifier, for example tel:+12025550142."
+    },
+    "resolver": {
+      "type": "string",
+      "format": "uri",
+      "description": "Authoritative Tilden resolver endpoint."
+    },
+    "verificationMethod": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Identifier for the key or verification method expected to authenticate resolver responses."
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "sequence": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Monotonic authority sequence used to supersede older delegations."
+    },
+    "previous": {
+      "type": "string",
+      "description": "Optional digest or identifier of the immediately preceding delegation."
+    },
+    "revocation": {
+      "type": "string",
+      "format": "uri",
+      "description": "Optional location for profile-defined revocation status."
+    },
+    "proof": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type", "verificationMethod", "proofValue"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "verificationMethod": {
+          "type": "string",
+          "minLength": 1
+        },
+        "created": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "proofValue": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}
