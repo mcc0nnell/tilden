@@ -1,0 +1,14 @@
+# OS/editor
+.DS_Store
+*.swp
+*.swo
+
+# Build/test output
+build/
+dist/
+coverage/
+.tmp/
+
+# Local environment
+.env
+.env.*
