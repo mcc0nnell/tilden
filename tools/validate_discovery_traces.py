@@ -10,7 +10,8 @@ from jsonschema import Draft202012Validator, FormatChecker
 
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_PATH = ROOT / "schemas" / "tilden-discovery-trace.schema.json"
-FIXTURES_DIR = ROOT / "conformance" / "discovery" / "valid"
+VALID_DIR = ROOT / "conformance" / "discovery" / "valid"
+INVALID_DIR = ROOT / "conformance" / "discovery" / "invalid"
 
 
 def load_json(path: Path):
@@ -20,21 +21,31 @@ def load_json(path: Path):
 
 def main() -> int:
     validator = Draft202012Validator(load_json(SCHEMA_PATH), format_checker=FormatChecker())
-    fixtures = sorted(FIXTURES_DIR.glob("*.json"))
-    if not fixtures:
-        raise SystemExit("no discovery fixtures found")
+    valid = sorted(VALID_DIR.glob("*.json"))
+    invalid = sorted(INVALID_DIR.glob("*.json"))
+    if not valid or not invalid:
+        raise SystemExit("discovery conformance requires valid and invalid fixtures")
 
     failed = False
-    for path in fixtures:
-        errors = sorted(validator.iter_errors(load_json(path)), key=lambda err: list(err.path))
+
+    for path in valid:
+        errors = list(validator.iter_errors(load_json(path)))
         if errors:
             failed = True
-            print(f"FAIL {path.relative_to(ROOT)}")
+            print(f"FAIL expected-valid {path.relative_to(ROOT)}")
             for error in errors:
                 location = ".".join(str(part) for part in error.path) or "<root>"
                 print(f"  {location}: {error.message}")
         else:
-            print(f"PASS {path.relative_to(ROOT)}")
+            print(f"PASS expected-valid {path.relative_to(ROOT)}")
+
+    for path in invalid:
+        errors = list(validator.iter_errors(load_json(path)))
+        if errors:
+            print(f"PASS expected-invalid {path.relative_to(ROOT)}")
+        else:
+            failed = True
+            print(f"FAIL expected-invalid accepted {path.relative_to(ROOT)}")
 
     return 1 if failed else 0
 
