@@ -1,0 +1,28 @@
+{
+  "tilden_version": "1",
+  "object_type": "authority-delegation",
+  "delegation_id": "tdel_01J7TILDEN000000000000001",
+  "serial": 42,
+  "scope": {
+    "type": "e164",
+    "prefix": "+12025550123"
+  },
+  "resolver": "https://resolver.example.net",
+  "signing_keys": [
+    {
+      "kid": "2026-09-a",
+      "alg": "Ed25519",
+      "kty": "OKP",
+      "crv": "Ed25519",
+      "x": "xJUx6jfXHWU2fB4_sXO6_Iz7MlBY-MfYO_idoXZkYJM"
+    }
+  ],
+  "valid_from": "2026-09-05T21:00:00Z",
+  "valid_until": "2026-12-05T21:00:00Z",
+  "policy": {
+    "max_resolution_ttl_seconds": 900
+  },
+  "metadata": {
+    "profile": "reference"
+  }
+}

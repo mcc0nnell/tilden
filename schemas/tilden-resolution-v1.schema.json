@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/spec/schemas/tilden-resolution-v1.schema.json",
+  "title": "Tilden Resolution Object v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "tilden_version",
+    "subject",
+    "issued_at",
+    "expires_at",
+    "authority",
+    "capabilities"
+  ],
+  "properties": {
+    "tilden_version": {
+      "const": "1"
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "issued_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "authority": {
+      "type": "string",
+      "format": "uri"
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/capability"
+      }
+    }
+  },
+  "$defs": {
+    "capability": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["type", "uri", "priority"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-z0-9][a-z0-9-]*$"
+        },
+        "uri": {
+          "type": "string",
+          "minLength": 1
+        },
+        "priority": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "media": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "features": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "auth": {
+          "type": ["string", "object"]
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    }
+  }
+}

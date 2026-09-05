@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tilden.example/spec/schemas/tilden-authority-delegation-v1.schema.json",
+  "title": "Tilden Authority Delegation Object v1",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "tilden_version",
+    "object_type",
+    "delegation_id",
+    "serial",
+    "scope",
+    "resolver",
+    "signing_keys",
+    "valid_from",
+    "valid_until"
+  ],
+  "properties": {
+    "tilden_version": {
+      "const": "1"
+    },
+    "object_type": {
+      "const": "authority-delegation"
+    },
+    "delegation_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "serial": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "scope": {
+      "$ref": "#/$defs/scope"
+    },
+    "resolver": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "signing_keys": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/publicKey"
+      }
+    },
+    "valid_from": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "valid_until": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previous": {
+      "type": "string",
+      "minLength": 1
+    },
+    "successor": {
+      "type": "string",
+      "minLength": 1
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "prefix"],
+      "properties": {
+        "type": {
+          "const": "e164"
+        },
+        "prefix": {
+          "type": "string",
+          "pattern": "^\\+[1-9][0-9]{0,14}$"
+        }
+      }
+    },
+    "publicKey": {
+      "type": "object",
+      "required": ["kid", "kty"],
+      "properties": {
+        "kid": {
+          "type": "string",
+          "minLength": 1
+        },
+        "alg": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kty": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": true
+    }
+  }
+}
