@@ -19,3 +19,5 @@ jobs:
         run: python -m pip install 'jsonschema[format]>=4.23,<5'
       - name: Validate examples
         run: python tools/validate_examples.py
+      - name: Validate ACE iTRS donor vectors
+        run: python research/ace-itrs/mock_resolver.py
