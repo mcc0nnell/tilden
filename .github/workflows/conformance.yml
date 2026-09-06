@@ -21,3 +21,5 @@ jobs:
         run: python tools/validate_examples.py
       - name: Validate ACE iTRS donor vectors
         run: python research/ace-itrs/mock_resolver.py
+      - name: Validate ACE Kamailio routing donor vectors
+        run: python research/ace-kamailio/mock_router.py
