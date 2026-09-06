@@ -1,0 +1,159 @@
+{
+  "format": "tilden.research.ace-itrs.v1",
+  "source": {
+    "repository": "mitre-ace-direct/asterisk",
+    "commit": "cbfc11e7660ed9d64c98d72336b3de3ea7b3aa33",
+    "path": "scripts/itrslookup.sh",
+    "blob": "40f3be73d9fc85e39d613183715d1a46d4043a61"
+  },
+  "claimBoundary": {
+    "productionLookup": false,
+    "currentProviderRouting": false,
+    "tildenConformance": false,
+    "purpose": "deterministic state-machine donor vectors"
+  },
+  "vectors": [
+    {
+      "id": "ACE-ITRS-MOCK-001",
+      "description": "simple lookup with direct E2U+sip discovery",
+      "mode": "simple",
+      "input": {
+        "number": "2025550100"
+      },
+      "observations": {
+        "alias": null,
+        "e2uSip": "provider-a.example",
+        "transportNaptr": null,
+        "srv": null
+      },
+      "expected": {
+        "normalizedNumber": "2025550100",
+        "enumQuery": "0.0.1.0.5.5.5.2.0.2.1.itrs.us",
+        "discoveryTarget": "provider-a.example",
+        "status": "found",
+        "route": null,
+        "fallbackAttempted": false
+      }
+    },
+    {
+      "id": "ACE-ITRS-MOCK-002",
+      "description": "simple lookup follows one alias before E2U+sip discovery",
+      "mode": "simple",
+      "input": {
+        "number": "+12025550101"
+      },
+      "observations": {
+        "alias": "alias-0101.itrs.example",
+        "e2uSip": "provider-b.example",
+        "transportNaptr": null,
+        "srv": null
+      },
+      "expected": {
+        "normalizedNumber": "2025550101",
+        "enumQuery": "1.0.1.0.5.5.5.2.0.2.1.itrs.us",
+        "discoveryTarget": "provider-b.example",
+        "status": "found",
+        "route": null,
+        "fallbackAttempted": false
+      }
+    },
+    {
+      "id": "ACE-ITRS-MOCK-003",
+      "description": "simple lookup has no E2U+sip discovery result",
+      "mode": "simple",
+      "input": {
+        "number": "12025550102"
+      },
+      "observations": {
+        "alias": null,
+        "e2uSip": null,
+        "transportNaptr": null,
+        "srv": null
+      },
+      "expected": {
+        "normalizedNumber": "2025550102",
+        "enumQuery": "2.0.1.0.5.5.5.2.0.2.1.itrs.us",
+        "discoveryTarget": null,
+        "status": "not_found",
+        "route": null,
+        "fallbackAttempted": false
+      }
+    },
+    {
+      "id": "ACE-ITRS-MOCK-004",
+      "description": "full lookup reaches a routable host and port through NAPTR then SRV",
+      "mode": "full",
+      "input": {
+        "number": "2025550103"
+      },
+      "observations": {
+        "alias": null,
+        "e2uSip": "provider-a.example",
+        "transportNaptr": "_sip._tcp.provider-a.example",
+        "srv": {
+          "host": "edge.provider-a.example",
+          "port": 5061
+        },
+        "providerMap": {
+          "edge.provider-a.example": "PROVIDER_A"
+        }
+      },
+      "expected": {
+        "normalizedNumber": "2025550103",
+        "enumQuery": "3.0.1.0.5.5.5.2.0.2.1.itrs.us",
+        "discoveryTarget": "provider-a.example",
+        "status": "routable",
+        "route": {
+          "host": "edge.provider-a.example",
+          "port": 5061,
+          "provider": "PROVIDER_A"
+        },
+        "fallbackAttempted": false
+      }
+    },
+    {
+      "id": "ACE-ITRS-MOCK-005",
+      "description": "full lookup reaches E2U+sip discovery but transport NAPTR is unavailable",
+      "mode": "full",
+      "input": {
+        "number": "2025550104"
+      },
+      "observations": {
+        "alias": null,
+        "e2uSip": "provider-c.example",
+        "transportNaptr": null,
+        "srv": null
+      },
+      "expected": {
+        "normalizedNumber": "2025550104",
+        "enumQuery": "4.0.1.0.5.5.5.2.0.2.1.itrs.us",
+        "discoveryTarget": "provider-c.example",
+        "status": "transport_unavailable",
+        "route": null,
+        "fallbackAttempted": true
+      }
+    },
+    {
+      "id": "ACE-ITRS-MOCK-006",
+      "description": "full lookup resolves transport NAPTR but no SRV route",
+      "mode": "full",
+      "input": {
+        "number": "2025550105"
+      },
+      "observations": {
+        "alias": null,
+        "e2uSip": "provider-d.example",
+        "transportNaptr": "_sip._tcp.provider-d.example",
+        "srv": null
+      },
+      "expected": {
+        "normalizedNumber": "2025550105",
+        "enumQuery": "5.0.1.0.5.5.5.2.0.2.1.itrs.us",
+        "discoveryTarget": "provider-d.example",
+        "status": "route_unavailable",
+        "route": null,
+        "fallbackAttempted": false
+      }
+    }
+  ]
+}
