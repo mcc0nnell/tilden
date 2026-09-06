@@ -1,0 +1,17 @@
+{
+  "version": "0.1",
+  "canonicalIdentity": "tel:+12025550123",
+  "authority": {
+    "id": "example-access.net"
+  },
+  "endpoints": [
+    {
+      "uri": "sip:access@example-access.net"
+    }
+  ],
+  "capabilities": [],
+  "trust": {
+    "profile": "example-signed-resolution-v0"
+  },
+  "expiresAt": "2030-01-01T00:00:00Z"
+}

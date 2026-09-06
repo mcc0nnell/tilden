@@ -1,0 +1,27 @@
+{
+  "version": "0.1",
+  "canonicalIdentity": "acct:alice@example-access.net",
+  "authority": {
+    "id": "example-access.net"
+  },
+  "endpoints": [
+    {
+      "uri": "sip:alice@example-access.net",
+      "priority": 10,
+      "capabilities": [
+        { "id": "video.sign", "parameters": { "languages": ["ase"] } },
+        { "id": "text.rtt", "parameters": { "profile": "t140" } },
+        { "id": "audio.voice" }
+      ]
+    }
+  ],
+  "capabilities": [
+    { "id": "video.sign" },
+    { "id": "text.rtt" },
+    { "id": "audio.voice" }
+  ],
+  "trust": {
+    "profile": "example-signed-resolution-v0"
+  },
+  "expiresAt": "2030-01-01T00:00:00Z"
+}

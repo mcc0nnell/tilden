@@ -1,0 +1,11 @@
+[project]
+name = "tilden-spec"
+version = "0.1.0"
+description = "Schemas and conformance tooling for the Tilden accessible-calling resolution specification"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "jsonschema[format]>=4.23,<5",
+]
