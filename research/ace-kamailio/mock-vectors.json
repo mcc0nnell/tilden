@@ -1,0 +1,132 @@
+{
+  "profile": "ace-kamailio-routing-donor-v1",
+  "source": {
+    "repository": "mitre-ace-direct/kamailio",
+    "commit": "3c56fc4112680a15cedd4ece835a9f371f079e0b",
+    "kamailioConfigBlob": "47f0af82f3c5a713e2bf7ae1e15023507e588e8d"
+  },
+  "claimBoundary": {
+    "kamailioConformance": false,
+    "sipConformance": false,
+    "currentVrsRouting": false,
+    "productionInterop": false
+  },
+  "vectors": [
+    {
+      "id": "external-invite-selects-first-healthy",
+      "input": {
+        "method": "INVITE",
+        "sourceRole": "external",
+        "cursor": 0,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": true},
+          {"uri": "sip:media-b.example:5060", "healthy": true}
+        ]
+      },
+      "expected": {
+        "action": "dispatch_media_server",
+        "selected": "sip:media-a.example:5060",
+        "nextCursor": 1
+      }
+    },
+    {
+      "id": "external-invite-round-robin-next",
+      "input": {
+        "method": "INVITE",
+        "sourceRole": "external",
+        "cursor": 1,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": true},
+          {"uri": "sip:media-b.example:5060", "healthy": true}
+        ]
+      },
+      "expected": {
+        "action": "dispatch_media_server",
+        "selected": "sip:media-b.example:5060",
+        "nextCursor": 0
+      }
+    },
+    {
+      "id": "external-invite-skips-unhealthy",
+      "input": {
+        "method": "INVITE",
+        "sourceRole": "external",
+        "cursor": 0,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": false},
+          {"uri": "sip:media-b.example:5060", "healthy": true}
+        ]
+      },
+      "expected": {
+        "action": "dispatch_media_server",
+        "selected": "sip:media-b.example:5060",
+        "nextCursor": 0
+      }
+    },
+    {
+      "id": "external-invite-explicit-route-exhaustion",
+      "input": {
+        "method": "INVITE",
+        "sourceRole": "external",
+        "cursor": 0,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": false},
+          {"uri": "sip:media-b.example:5060", "healthy": false}
+        ]
+      },
+      "expected": {
+        "action": "route_unavailable",
+        "selected": null,
+        "nextCursor": 0
+      }
+    },
+    {
+      "id": "media-server-invite-is-not-redispatched",
+      "input": {
+        "method": "INVITE",
+        "sourceRole": "media_server",
+        "cursor": 0,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": true}
+        ]
+      },
+      "expected": {
+        "action": "inside_route",
+        "selected": null,
+        "nextCursor": 0
+      }
+    },
+    {
+      "id": "register-forwarding-is-distinct",
+      "input": {
+        "method": "REGISTER",
+        "sourceRole": "external",
+        "cursor": 0,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": true}
+        ]
+      },
+      "expected": {
+        "action": "forward_registration",
+        "selected": "sip:media-a.example:5060",
+        "nextCursor": 0
+      }
+    },
+    {
+      "id": "non-invite-request-not-forced-through-media-server-selection",
+      "input": {
+        "method": "OPTIONS",
+        "sourceRole": "external",
+        "cursor": 0,
+        "destinations": [
+          {"uri": "sip:media-a.example:5060", "healthy": true}
+        ]
+      },
+      "expected": {
+        "action": "direct_policy_path",
+        "selected": null,
+        "nextCursor": 0
+      }
+    }
+  ]
+}
