@@ -2,75 +2,70 @@
 
 **Federated identity, addressing, discovery, and capability resolution for accessible real-time communications.**
 
-Tilden defines a neutral resolution layer for worldwide accessible calling. It maps human-reachable identifiers to authoritative federation endpoints and capability metadata without requiring the world to adopt a single provider, national platform, or calling stack.
-
-## North star
-
-A person should be able to reach another person across providers, platforms, modalities, languages, and national networks without requiring bespoke bilateral integration between every system.
-
-Tilden supplies the discovery contract:
-
-```text
-identifier
-  -> normalization
-  -> authority/delegation
-  -> endpoint discovery
-  -> accessibility capabilities
-  -> trust + freshness
-  -> TildenResolution
-  -> calling runtime
-```
-
-## Tilden and Baudot
-
-Tilden and Baudot are deliberately separate projects.
-
-- **Tilden:** who, where, and how an accessible identity can be reached.
-- **Baudot:** whether independently implemented systems can establish an interoperable accessible session.
+Tilden defines a neutral resolution layer for accessible calling. It maps human-reachable identifiers to authoritative federation endpoints and capability metadata without requiring the world to adopt a single provider or calling stack.
 
 Baudot is expected to be the first reference consumer of Tilden resolution objects, but Tilden is intentionally independent of Baudot.
 
-## Draft specification
+## Core contract
 
-The first protocol surface is [`TILDEN-CORE-001`](spec/TILDEN-CORE-001.md), currently Draft 0.1.
+The first protocol surface is [`TILDEN-CORE-001`](spec/TILDEN-CORE-001.md), currently Draft 0.1. Its machine-readable object is [`schemas/tilden-resolution.schema.json`](schemas/tilden-resolution.schema.json).
 
-It defines:
-
-- identifier normalization;
-- authoritative resolution;
-- endpoint discovery;
-- accessibility capability advertisement;
-- trust and delegation metadata;
-- expiry and caching semantics;
-- provider portability expectations;
-- privacy constraints;
-- failure semantics;
-- the versioned handoff contract used by consumers such as Baudot.
-
-The machine-readable resolution object is defined in [`schemas/tilden-resolution.schema.json`](schemas/tilden-resolution.schema.json).
-
-## Repository layout
+At the boundary:
 
 ```text
-spec/          normative specifications
-schemas/       machine-readable protocol schemas
-examples/      example resolution objects
-conformance/   executable interoperability/conformance fixtures
-docs/          architecture and ADRs
-tools/         validation and development utilities
+Tilden: who / where / how can this identity be reached?
+Baudot: can the resolved systems establish an interoperable accessible session?
 ```
 
-## Design invariants
+A successful resolution is not proof of call, media, accessibility, or security interoperability.
 
-1. No mandatory single provider or global operator.
-2. Tilden does not depend on Baudot runtime internals.
-3. Telephone numbers remain first-class, but are not the only possible identity model.
-4. Trust, authority, delegation, expiry, and downgrade behavior are explicit.
-5. Accessibility capability disclosure is minimized because it can be privacy-sensitive.
-6. Resolution success is not the same thing as session interoperability success.
+## Resolution shape
+
+```text
+human-reachable identifier
+        |
+        v
+   Tilden resolver
+        |
+        v
+  TildenResolution
+        |
+        +-- canonical identity
+        +-- asserting authority
+        +-- endpoints
+        +-- accessibility capabilities
+        +-- trust metadata
+        `-- expiry
+```
+
+The core deliberately does not freeze one discovery transport. DNS/ENUM-family resolution, HTTPS resources, directory APIs, enterprise systems, and national-network profiles can be evaluated without baking one deployment model into the base object.
+
+## Conformance
+
+Install the development dependency and validate the examples/fixtures:
+
+```bash
+python -m pip install -e '.[dev]'
+python tools/validate_examples.py
+```
+
+Current fixtures cover minimal and multimodal resolution objects. They validate the object boundary; they do not assert runtime call interoperability.
+
+CI runs the same validation on pushes and pull requests.
+
+## Research donors
+
+Legacy and production-derived systems can supply scenarios without becoming normative dependencies. The first preserved donor is the public ACE Direct iTRS resolution flow:
+
+- [`docs/provenance/ace-direct-itrs-resolution.md`](docs/provenance/ace-direct-itrs-resolution.md) records the pinned source surfaces and separates useful resolution concepts from implementation quirks.
+- [`research/ace-itrs/`](research/ace-itrs/) contains deterministic offline mocks for direct discovery, aliasing, missing records, NAPTR/SRV routing, and bounded failure states.
+
+These mocks never query production iTRS infrastructure and make no claim about current provider routing.
 
 ## Status
 
-Early protocol design. Names, transports, trust profiles, and wire formats may change before 1.0.
+Tilden is pre-1.0 specification work. Open questions intentionally remain around discovery transports, mandatory trust profiles, cryptographic envelopes, emergency routing, and international portability authority models. Those should be closed with implementation and interoperability evidence rather than guessed into the core.
 
-Licensed under Apache-2.0.
+## Project name
+
+The project name honors Edward Tilden, connecting modern federated addressing work to the long history of telecommunications numbering and public infrastructure.
