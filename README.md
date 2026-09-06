@@ -47,20 +47,29 @@ Install the development dependency and validate the examples/fixtures:
 ```bash
 python -m pip install -e '.[dev]'
 python tools/validate_examples.py
+python research/ace-itrs/mock_resolver.py
+python research/ace-kamailio/mock_router.py
 ```
 
-Current fixtures cover minimal and multimodal resolution objects. They validate the object boundary; they do not assert runtime call interoperability.
+Current fixtures cover minimal and multimodal resolution objects plus offline research-donor state machines. They validate boundaries; they do not assert runtime call interoperability.
 
 CI runs the same validation on pushes and pull requests.
 
 ## Research donors
 
-Legacy and production-derived systems can supply scenarios without becoming normative dependencies. The first preserved donor is the public ACE Direct iTRS resolution flow:
+Legacy and production-derived systems can supply scenarios without becoming normative dependencies.
+
+The public ACE Direct iTRS resolution flow is preserved as a discovery donor:
 
 - [`docs/provenance/ace-direct-itrs-resolution.md`](docs/provenance/ace-direct-itrs-resolution.md) records the pinned source surfaces and separates useful resolution concepts from implementation quirks.
 - [`research/ace-itrs/`](research/ace-itrs/) contains deterministic offline mocks for direct discovery, aliasing, missing records, NAPTR/SRV routing, and bounded failure states.
 
-These mocks never query production iTRS infrastructure and make no claim about current provider routing.
+The public ACE Direct Kamailio deployment is preserved as a post-resolution routing donor:
+
+- [`docs/provenance/ace-direct-kamailio-routing.md`](docs/provenance/ace-direct-kamailio-routing.md) records dispatcher/source-role/media-relay boundaries from the pinned proxy configuration.
+- [`research/ace-kamailio/`](research/ace-kamailio/) contains deterministic offline mocks for backend selection, route exhaustion, source-role separation, and registration forwarding.
+
+These mocks never query production iTRS infrastructure, start SIP/media services, or make a claim about current provider routing.
 
 ## Status
 
